@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-5)y-(dzo6u-6rk#yxk2^h0@z(zb!agkor%5_-43od)s!l3432b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["rachit-todo.azurewebsites.net]
 
 
 # Application definition
