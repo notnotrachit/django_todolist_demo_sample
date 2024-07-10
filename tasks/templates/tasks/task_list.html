@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            const taskList = document.getElementById("task-list");
+
+            function renderTasks() {
+                taskList.innerHTML = "";
+                tasks.forEach((task, index) => {
+                    const li = document.createElement("li");
+                    li.className = "flex justify-between items-center bg-white rounded p-2 shadow mb-2";
+                    li.textContent = task;
+                    const deleteButton = document.createElement("button");
+                    deleteButton.className = "bg-green-500 text-white px-2 py-1 rounded hover:bg-red-700";
+                    deleteButton.textContent = "Done";
+                    deleteButton.onclick = function() {
+                        tasks.splice(index, 1);
+                        localStorage.setItem("tasks", JSON.stringify(tasks));
+                        renderTasks();
+                    };
+                    li.appendChild(deleteButton);
+                    taskList.appendChild(li);
+                });
+            }
+
+            document.getElementById("add-task").addEventListener("submit", function(e) {
+                e.preventDefault();
+                const taskInput = document.getElementById("task-input");
+                const newTask = taskInput.value.trim();
+                if (newTask) {
+                    tasks.push(newTask);
+                    localStorage.setItem("tasks", JSON.stringify(tasks));
+                    renderTasks();
+                    taskInput.value = "";
+                }
+            });
+
+            renderTasks();
+        });
+    </script>
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h1 class="text-2xl font-bold mb-4 text-center">To-Do List</h1>
+        <form id="add-task" class="mb-4">
+            <div class="flex">
+                <input type="text" id="task-input" placeholder="New task" required class="flex-grow border rounded-l py-2 px-3 focus:outline-none">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-700">Add</button>
+            </div>
+        </form>
+        <ul id="task-list" class="list-none p-0"></ul>
+    </div>
+</body>
+</html>
